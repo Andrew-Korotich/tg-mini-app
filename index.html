@@ -1,0 +1,2227 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>Ты будешь моей валентинкой? ❤️</title>
+
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Валентинка">
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    /* твои стили */
+  </style>
+</head>
+    /* СБРОС И БАЗА */
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #050505 0%, #1a0a0f 25%, #3d0a1a 50%, #1a0a0f 75%, #050505 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 20s ease infinite;
+      color: #ffdde1;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      text-align: center;
+      padding: 20px;
+      position: relative;
+      top: auto;
+      left: auto;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(255, 46, 99, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 107, 129, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(156, 39, 176, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    body>* {
+      position: relative;
+      z-index: 2;
+    }
+
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* Фоновые звёзды */
+    .bg-stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
+    }
+
+    .star.small {
+      width: 1px;
+      height: 1px;
+      animation: twinkleSlow 4s ease-in-out infinite;
+    }
+
+    .star.medium {
+      width: 2px;
+      height: 2px;
+      animation: twinkle 3s ease-in-out infinite;
+    }
+
+    .star.large {
+      width: 3px;
+      height: 3px;
+      box-shadow: 0 0 3px rgba(255, 255, 255, 1);
+      animation: twinkleFast 2.5s ease-in-out infinite;
+    }
+
+    .star.glow {
+      width: 2px;
+      height: 2px;
+      background: #ffb3d9;
+      box-shadow: 0 0 4px rgba(255, 179, 217, 0.8);
+      animation: twinkleGlow 3.5s ease-in-out infinite;
+    }
+
+    @keyframes twinkleSlow {
+
+      0%,
+      100% {
+        opacity: 0.3;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: 0.4;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes twinkleFast {
+
+      0%,
+      100% {
+        opacity: 0.5;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes twinkleGlow {
+
+      0%,
+      100% {
+        opacity: 0.6;
+      }
+
+      50% {
+        opacity: 1;
+        box-shadow: 0 0 6px rgba(255, 179, 217, 1);
+      }
+    }
+
+    .floating-heart {
+      position: fixed;
+      font-size: 1.5rem;
+      opacity: 0.1;
+      pointer-events: none;
+      z-index: 0;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+
+      25% {
+        transform: translate(30px, -30px) rotate(90deg);
+      }
+
+      50% {
+        transform: translate(0, -60px) rotate(180deg);
+      }
+
+      75% {
+        transform: translate(-30px, -30px) rotate(270deg);
+      }
+    }
+
+    /* === НОВАЯ АНИМАЦИЯ СЕРДЦА (SVG РЯБЬ) === */
+    .ripple-container {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      filter: drop-shadow(0 0 20px rgba(255, 46, 99, 0.6)) drop-shadow(0 0 40px rgba(255, 46, 99, 0.3));
+    }
+
+    .ripple-container::before {
+      content: '';
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(255, 46, 99, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: pulseGlow 3s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.5;
+      }
+      50% {
+        transform: scale(1.2);
+        opacity: 0.9;
+      }
+    }
+
+    /* Стиль самого контура сердца (SVG) */
+    .heart-svg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: #ff2e63;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0;
+      animation: rippleEffect 3s infinite cubic-bezier(0.19, 1, 0.22, 1);
+      filter: drop-shadow(0 0 4px rgba(255, 46, 99, 0.7));
+    }
+
+    /* Задержки для создания эффекта волн */
+    .heart-svg:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .heart-svg:nth-child(2) {
+      animation-delay: 1s;
+    }
+
+    .heart-svg:nth-child(3) {
+      animation-delay: 2s;
+    }
+
+    /* Сама анимация расширения и исчезновения */
+    @keyframes rippleEffect {
+      0% {
+        transform: scale(0.1);
+        opacity: 0;
+        stroke-width: 4;
+      }
+
+      20% {
+        opacity: 1;
+        /* Появляется */
+      }
+
+      100% {
+        transform: scale(2.5);
+        /* Увеличивается в 2.5 раза */
+        opacity: 0;
+        /* Исчезает */
+        stroke-width: 1;
+        /* Линия становится тоньше */
+      }
+    }
+
+    /* ТЕКСТ */
+    h1 {
+      font-size: clamp(20px, 6vw, 32px);
+      font-weight: 700;
+      margin: 0 0 40px 0;
+      min-height: 70px;
+      text-shadow: 0 2px 10px rgba(255, 46, 99, 0.3), 0 0 20px rgba(255, 46, 99, 0.15);
+      transition: all 0.4s ease;
+      letter-spacing: 0.5px;
+      line-height: 1.4;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* КНОПКИ */
+    .btn-container {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      height: auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: clamp(12px, 3vw, 25px);
+      flex-wrap: wrap;
+      z-index: 100;
+      margin: clamp(20px, 4vw, 30px) 0;
+    }
+
+    button {
+      padding: clamp(12px, 3vw, 16px) clamp(20px, 5vw, 36px);
+      font-size: clamp(14px, 3.5vw, 18px);
+      font-weight: 700;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 10;
+      -webkit-appearance: none;
+      appearance: none;
+      -webkit-font-smoothing: antialiased;
+      font-kerning: auto;
+      outline: none;
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: manipulation;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      min-height: 48px;
+      min-width: 48px;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    button:focus {
+      outline: 2px solid #ff2e63;
+      outline-offset: 2px;
+    }
+
+    /* Container Stars */
+    .container-star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
+      pointer-events: none;
+    }
+
+    .container-star.small {
+      width: 1px;
+      height: 1px;
+      animation: twinkleSlow 4s ease-in-out infinite;
+    }
+
+    .container-star.medium {
+      width: 1.5px;
+      height: 1.5px;
+      animation: twinkle 3s ease-in-out infinite;
+    }
+
+    .container-star.large {
+      width: 2px;
+      height: 2px;
+      box-shadow: 0 0 2px rgba(255, 255, 255, 1);
+      animation: twinkleFast 2.5s ease-in-out infinite;
+    }
+
+    .container-star.glow {
+      width: 1.5px;
+      height: 1.5px;
+      background: #ffb3d9;
+      box-shadow: 0 0 3px rgba(255, 179, 217, 0.8);
+      animation: twinkleGlow 3.5s ease-in-out infinite;
+    }
+
+    #btnYes {
+      background: linear-gradient(135deg, #ff2e63 0%, #ff0844 100%);
+      color: white;
+      box-shadow: 0 8px 25px rgba(255, 46, 99, 0.4);
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      pointer-events: auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #btnYes::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      animation: shine 2s infinite;
+      border-radius: 30px;
+      opacity: 0.6;
+    }
+
+    @keyframes shine {
+      0%, 100% {
+        transform: translateX(-100%);
+      }
+      50% {
+        transform: translateX(100%);
+      }
+    }
+
+    #btnYes::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1), transparent);
+      border-radius: 30px;
+    }
+
+    #btnYes:hover {
+      transform: translateY(-3px) scale(1.08);
+      box-shadow: 0 0 25px rgba(255, 46, 99, 0.9), 0 15px 40px rgba(255, 46, 99, 0.7);
+    }
+
+    #btnYes:active {
+      transform: translateY(-1px) scale(0.97);
+    }
+
+    #btnNo {
+      background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+      color: #999;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      position: static;
+      will-change: position;
+      transition: all 0.2s ease-out;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      pointer-events: auto;
+    }
+
+    #btnNo:hover {
+      background: linear-gradient(135deg, #3a3a3a 0%, #242424 100%);
+      color: #aaa;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      transform: translateY(-2px);
+    }
+
+    /* Конфетти при успехе */
+    .confetti {
+      position: fixed;
+      top: -20px;
+      z-index: 999;
+      font-size: 24px;
+      pointer-events: none;
+      animation: fall linear forwards;
+      will-change: transform;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* === ИГРА С СЕРДЦАМИ === */
+    #gameContainer {
+      display: none;
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0f 100%);
+      z-index: 200;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #gameContainer.active {
+      display: flex;
+    }
+
+    .game-header {
+      position: absolute;
+      top: 20px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 20px;
+      color: #ffdde1;
+      font-size: clamp(18px, 5vw, 24px);
+      font-weight: bold;
+      z-index: 250;
+    }
+
+    .game-score {
+      background: rgba(255, 46, 99, 0.2);
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: 2px solid #ff2e63;
+      min-width: 100px;
+      text-align: center;
+    }
+
+    .game-timer {
+      background: rgba(255, 107, 129, 0.2);
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: 2px solid #ff6b81;
+      min-width: 100px;
+      text-align: center;
+    }
+
+    #gameArea {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .clickable-heart {
+      position: fixed;
+      cursor: pointer;
+      font-size: 3rem;
+      user-select: none;
+      -webkit-user-select: none;
+      animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 210;
+      transition: transform 0.1s ease;
+    }
+
+    .clickable-heart:active {
+      transform: scale(0.8);
+    }
+
+    @keyframes popIn {
+      0% {
+        transform: scale(0) rotate(-30deg);
+        opacity: 0;
+      }
+
+      70% {
+        transform: scale(1.1) rotate(5deg);
+      }
+
+      100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+    }
+
+    .heart-pop {
+      position: fixed;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ff2e63;
+      pointer-events: none;
+      z-index: 211;
+      animation: popFloat 1s ease-out forwards;
+    }
+
+    @keyframes popFloat {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(0, -50px) scale(1.2);
+      }
+    }
+
+    .game-instructions {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(10, 10, 10, 0.95);
+      padding: 30px;
+      border-radius: 20px;
+      border: 2px solid #ff2e63;
+      color: #ffdde1;
+      text-align: center;
+      z-index: 300;
+      max-width: 90%;
+      backdrop-filter: blur(10px);
+    }
+
+    .game-instructions h2 {
+      font-size: clamp(20px, 6vw, 28px);
+      margin: 0 0 15px 0;
+      color: #ff2e63;
+    }
+
+    .game-instructions p {
+      font-size: clamp(14px, 4vw, 18px);
+      margin: 10px 0;
+      line-height: 1.5;
+    }
+
+    .game-instructions button {
+      margin-top: 20px;
+      background: linear-gradient(135deg, #ff2e63, #ff0844);
+      color: white;
+    }
+
+    .game-end-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 10, 10, 0.98);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 350;
+      backdrop-filter: blur(5px);
+    }
+
+    .game-end-screen.show {
+      display: flex;
+    }
+
+    .game-end-content {
+      text-align: center;
+      color: #ffdde1;
+    }
+
+    .game-end-content h2 {
+      font-size: clamp(24px, 8vw, 48px);
+      color: #ff2e63;
+      margin: 0 0 20px 0;
+    }
+
+    .game-end-content p {
+      font-size: clamp(16px, 5vw, 24px);
+      margin: 15px 0;
+    }
+
+    .game-end-content .final-message {
+      font-size: clamp(18px, 5vw, 28px);
+      color: #ff2e63;
+      font-weight: bold;
+      margin: 30px 0;
+      font-style: italic;
+    }
+
+    .game-end-content button {
+      margin-top: 20px;
+      background: linear-gradient(135deg, #ff2e63, #ff0844);
+      color: white;
+    }
+
+    /* === МЕНЮ И ЭКРАНЫ === */
+    .menu-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .menu-btn {
+      padding: clamp(12px, 2.5vw, 16px) clamp(16px, 3vw, 28px);
+      font-size: clamp(14px, 3vw, 16px);
+      font-weight: bold;
+      border: none;
+      border-radius: 25px;
+      background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(156, 39, 176, 0.3);
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      pointer-events: auto;
+      z-index: 10;
+      position: relative;
+    }
+
+    .menu-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0);
+      border-radius: 25px;
+      transition: background 0.3s ease;
+    }
+
+    .menu-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(156, 39, 176, 0.5);
+    }
+
+    .menu-btn:hover::after {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .menu-btn:active {
+      transform: scale(0.95);
+    }
+
+    .container-screen {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #050505 0%, #1a0a0f 25%, #3d0a1a 50%, #1a0a0f 75%, #050505 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 20s ease infinite;
+      z-index: 300;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(15px, 3vw, 25px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.3s, opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .container-screen::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(255, 46, 99, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 107, 129, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(156, 39, 176, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .container-stars-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .container-screen.active {
+      display: flex;
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: clamp(15px, 3vw, 20px);
+      left: clamp(15px, 3vw, 20px);
+      padding: clamp(10px, 2vw, 12px) clamp(16px, 3vw, 22px);
+      background: rgba(255, 46, 99, 0.15);
+      border: 2px solid #ff2e63;
+      color: #ff2e63;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: clamp(14px, 3vw, 16px);
+      font-weight: bold;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 250;
+      min-height: 44px;
+      min-width: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      pointer-events: auto;
+      backdrop-filter: blur(5px);
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 46, 99, 0.25);
+      box-shadow: 0 0 15px rgba(255, 46, 99, 0.4);
+      transform: translateX(-2px);
+    }
+
+    /* === ПИСЬМО === */
+    .letter-content {
+      background: linear-gradient(135deg, rgba(255, 46, 99, 0.15), rgba(156, 39, 176, 0.15));
+      border: 2px solid #ff2e63;
+      border-radius: 20px;
+      padding: clamp(25px, 5vw, 40px) clamp(20px, 4vw, 30px);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      animation: letterOpen 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 0 30px rgba(255, 46, 99, 0.4), 0 20px 60px rgba(255, 46, 99, 0.2);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .letter-content::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(255, 46, 99, 0.1), transparent);
+      border-radius: 20px;
+      pointer-events: none;
+    }
+
+    @keyframes letterOpen {
+      0% {
+        transform: scale(0.7) rotateX(-90deg);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(1) rotateX(0deg);
+        opacity: 1;
+      }
+    }
+
+    .letter-header {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      animation: bounce 1s ease-in-out;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .letter-text {
+      color: #ffdde1;
+      font-size: 1em;
+      line-height: 1.8;
+      margin: 20px 0;
+    }
+
+    .letter-text p {
+      margin: 15px 0;
+    }
+
+    .letter-footer {
+      margin-top: 30px;
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #ff2e63;
+      font-style: italic;
+    }
+
+    /* === КАРТОЧКИ === */
+    .cards-content {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(20px, 4vw, 30px);
+    }
+
+    .card-counter {
+      font-size: clamp(1em, 3vw, 1.2em);
+      color: #ff2e63;
+      font-weight: bold;
+    }
+
+    .card-carousel {
+      display: flex;
+      align-items: center;
+      gap: clamp(12px, 2vw, 20px);
+      width: 100%;
+      max-width: 600px;
+      justify-content: center;
+      flex-wrap: nowrap;
+    }
+
+    .card-display {
+      background: linear-gradient(135deg, rgba(255, 46, 99, 0.15), rgba(156, 39, 176, 0.15));
+      border: 2px solid #ff2e63;
+      border-radius: 20px;
+      padding: clamp(25px, 4vw, 40px);
+      min-height: clamp(200px, 50vw, 250px);
+      width: 100%;
+      max-width: 350px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #ffdde1;
+      font-size: clamp(1.1em, 3vw, 1.3em);
+      line-height: 1.8;
+      animation: cardFlip 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 0 25px rgba(255, 46, 99, 0.3), 0 10px 40px rgba(255, 46, 99, 0.2);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .card-display::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(255, 46, 99, 0.1), transparent);
+      pointer-events: none;
+    }
+
+    .cards-content {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(20px, 4vw, 30px);
+      z-index: 10;
+    }
+
+    @keyframes cardFlip {
+      0% {
+        transform: rotateY(90deg);
+        opacity: 0;
+      }
+
+      100% {
+        transform: rotateY(0deg);
+        opacity: 1;
+      }
+    }
+
+    .card-nav-btn {
+      background: linear-gradient(135deg, #ff2e63, #ff0844);
+      color: white;
+      border: 2px solid transparent;
+      border-radius: 50%;
+      width: clamp(50px, 12vw, 70px);
+      height: clamp(50px, 12vw, 70px);
+      font-size: clamp(24px, 6vw, 32px);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 0 15px rgba(255, 46, 99, 0.4), 0 6px 20px rgba(255, 46, 99, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      min-width: 50px;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      pointer-events: auto;
+      position: relative;
+    }
+
+    .card-nav-btn::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      background: linear-gradient(135deg, #ff6b81, #ff0844);
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+      filter: blur(8px);
+    }
+
+    .card-nav-btn:hover {
+      transform: scale(1.15) translateY(-2px);
+      box-shadow: 0 0 25px rgba(255, 46, 99, 0.7), 0 12px 30px rgba(255, 46, 99, 0.4);
+    }
+
+    .card-nav-btn:hover::before {
+      opacity: 1;
+    }
+
+    .card-nav-btn:active {
+      transform: scale(0.95);
+    }
+
+    .card-hint {
+      color: #ff6b81;
+      font-size: 0.9em;
+      font-style: italic;
+    }
+
+    /* === ПЛЕЙЛИСТ === */
+    .playlist-content {
+      background: linear-gradient(135deg, rgba(255, 46, 99, 0.15), rgba(156, 39, 176, 0.15));
+      border: 2px solid #ff2e63;
+      border-radius: 20px;
+      padding: clamp(20px, 4vw, 30px);
+      max-width: 600px;
+      width: 100%;
+      max-height: 70vh;
+      overflow-y: auto;
+      animation: slideUp 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 0 30px rgba(255, 46, 99, 0.3), 0 15px 50px rgba(255, 46, 99, 0.2);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    @keyframes slideUp {
+      0% {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .playlist-content h2 {
+      color: #ff2e63;
+      margin-top: 0;
+      text-align: center;
+      font-size: 1.8em;
+    }
+
+    .playlist-list {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(12px, 2vw, 15px);
+    }
+
+    .playlist-item {
+      background: rgba(255, 46, 99, 0.1);
+      padding: clamp(15px, 3vw, 20px) clamp(15px, 3vw, 25px);
+      border-radius: 12px;
+      border-left: 4px solid #ff2e63;
+      color: #ffdde1;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .playlist-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, #ff2e63 0%, #ff6b81 100%);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.3s ease;
+    }
+
+    .playlist-item:hover {
+      background: rgba(255, 46, 99, 0.2);
+      transform: translateX(8px);
+      box-shadow: -2px 4px 12px rgba(255, 46, 99, 0.2);
+    }
+
+    .playlist-item:hover::before {
+      transform: scaleY(1);
+    }
+
+    .playlist-item .song-number {
+      color: #ff2e63;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .playlist-item .song-name {
+      font-weight: bold;
+      margin-bottom: 3px;
+    }
+
+    .playlist-item .song-artist {
+      color: #ffb3d9;
+      font-size: 0.9em;
+      margin-bottom: 10px;
+    }
+
+    .spotify-play-btn {
+      background: linear-gradient(135deg, #1DB954, #1ed760);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: clamp(8px, 2vw, 12px) clamp(14px, 3vw, 20px);
+      font-size: clamp(0.8em, 2vw, 1em);
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: clamp(8px, 2vw, 12px);
+      margin-right: clamp(6px, 1.5vw, 10px);
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .spotify-play-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(30, 215, 96, 0.4);
+    }
+
+    .spotify-play-btn:active {
+      transform: scale(0.95);
+    }
+
+    .youtube-btn {
+      background: linear-gradient(135deg, #ff0000, #cc0000);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: clamp(8px, 2vw, 12px) clamp(14px, 3vw, 20px);
+      font-size: clamp(0.8em, 2vw, 1em);
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: clamp(8px, 2vw, 12px);
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .youtube-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(255, 0, 0, 0.4);
+    }
+
+    .youtube-btn:active {
+      transform: scale(0.95);
+    }
+
+    .particle {
+      position: fixed;
+      pointer-events: none;
+      font-size: 1.2rem;
+      z-index: 215;
+    }
+
+    @keyframes particleBurst {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) scale(0.3);
+      }
+    }
+
+    .particle {
+      animation: particleBurst 0.8s ease-out forwards;
+    }
+
+    .spark {
+      position: fixed;
+      pointer-events: none;
+      z-index: 214;
+    }
+
+    @keyframes sparkle {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) scale(0);
+      }
+    }
+
+    .spark {
+      animation: sparkle 0.6s ease-out forwards;
+    }
+
+    .flash {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 216;
+      animation: flashEffect 0.3s ease-out;
+    }
+
+    @keyframes flashEffect {
+      0% {
+        background: rgba(255, 46, 99, 0.6);
+      }
+
+      100% {
+        background: rgba(255, 46, 99, 0);
+      }
+    }
+
+    .pulse-ring {
+      position: fixed;
+      border: 2px solid #ff2e63;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 213;
+    }
+
+    @keyframes pulseRing {
+      0% {
+        transform: scale(0);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(3);
+        opacity: 0;
+      }
+    }
+
+    .pulse-ring {
+      animation: pulseRing 0.6s ease-out;
+    }
+
+    @media (max-width: 480px) {
+      .ripple-container {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        margin-bottom: 30px;
+      }
+
+      .btn-container {
+        gap: 12px;
+      }
+
+      button {
+        min-height: 48px;
+        min-width: 100px;
+      }
+
+      .game-header {
+        gap: 10px;
+      }
+
+      .game-score,
+      .game-timer {
+        padding: 8px 12px;
+        font-size: 16px;
+      }
+
+      .clickable-heart {
+        font-size: 2rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .confetti {
+        display: none;
+      }
+    }
+
+    /* Улучшенные переходы */
+    button, .menu-btn, .back-btn, .card-nav-btn, .photo-nav-btn {
+      will-change: transform;
+    }
+
+    /* Оптимизация производительности */
+    .particle, .spark, .pulse-ring {
+      will-change: transform, opacity;
+    }
+
+    /* Лучше видны кнопки при фокусе */
+    button:focus-visible, .menu-btn:focus-visible, .back-btn:focus-visible {
+      outline: 2px solid #ff2e63;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-stars" id="bgStars"></div>
+
+  <div class="ripple-container">
+    <svg class="heart-svg" viewBox="0 0 24 24">
+      <path
+        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+      </path>
+    </svg>
+    <svg class="heart-svg" viewBox="0 0 24 24">
+      <path
+        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+      </path>
+    </svg>
+    <svg class="heart-svg" viewBox="0 0 24 24">
+      <path
+        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+      </path>
+    </svg>
+  </div>
+
+  <h1 id="questionText">Ты будешь моей валентинкой?</h1>
+
+  <div class="btn-container">
+    <button id="btnYes">Да</button>
+    <button id="btnNo">Нет</button>
+  </div>
+
+  <!-- МЕНЮ КНОПОК -->
+  <div id="menuContainer" class="menu-container">
+    <button id="btnLetter" class="menu-btn" onclick="window.openLetter()">💌 Письмо</button>
+    <button id="btnCards" class="menu-btn" onclick="window.openCards()">🎴 Карточки</button>
+    <button id="btnPlaylist" class="menu-btn" onclick="window.openPlaylist()">🎵 Плейлист</button>
+  </div>
+
+  <!-- ПИСЬМО -->
+  <div id="letterContainer" class="container-screen">
+    <div class="letter-content">
+      <div class="letter-header">💌</div>
+      <div class="letter-text">
+        <p>Мне так давно хотелось это сказать...</p>
+        <p style="margin: 30px 0; font-size: 1.1em; color: #ff2e63; font-weight: bold;">Ты очень важна для меня ❤️</p>
+        <p>Каждый день с тобой становится лучше,<br>каждый момент значит для меня больше, чем ты можешь представить.</p>
+        <p style="margin-top: 30px; font-size: 0.95em; color: #ffb3d9;">14 февраля — это день, когда я хочу
+          сказать:<br>Спасибо, что ты есть в моей жизни! 💕</p>
+      </div>
+      <div class="letter-footer">С любовью, Ёжик 💖</div>
+    </div>
+    <button id="backFromLetter" class="back-btn" onclick="window.closeLetter()">← Назад</button>
+  </div>
+
+  <!-- КАРТОЧКИ -->
+  <div id="cardsContainer" class="container-screen">
+    <div class="cards-content">
+      <div class="card-counter">
+        <span id="cardIndex">1</span> / <span id="cardTotal">0</span>
+      </div>
+      <div class="card-carousel">
+        <button id="cardPrev" class="card-nav-btn card-prev">‹</button>
+        <div id="cardDisplay" class="card-display"></div>
+        <button id="cardNext" class="card-nav-btn card-next">›</button>
+      </div>
+      <div class="card-hint">Свайп или кликай стрелки →</div>
+    </div>
+    <button id="backFromCards" class="back-btn" onclick="window.closeCards()">← Назад</button>
+  </div>
+
+  <!-- ПЛЕЙЛИСТ -->
+  <div id="playlistContainer" class="container-screen">
+    <div class="playlist-content">
+      <h2>🎵 Наш плейлист 🎵</h2>
+      <div id="playlistList" class="playlist-list"></div>
+    </div>
+    <button id="backFromPlaylist" class="back-btn" onclick="window.closePlaylist()">← Назад</button>
+  </div>
+
+  <!-- ОТЛАДОЧНЫЙ ЭЛЕМЕНТ -->
+  <div id="debugStatus"
+    style="position: fixed; bottom: 10px; right: 10px; background: rgba(255, 46, 99, 0.8); color: white; padding: 10px 15px; border-radius: 10px; font-size: 12px; z-index: 9999; max-width: 200px; word-break: break-word;">
+  </div>
+
+  <script>
+    // === КЭШИРОВАНИЕ DOM ЭЛЕМЕНТОВ ===
+    const DOM = {
+      letterContainer: document.getElementById('letterContainer'),
+      cardsContainer: document.getElementById('cardsContainer'),
+      playlistContainer: document.getElementById('playlistContainer'),
+      btnLetter: document.getElementById('btnLetter'),
+      btnCards: document.getElementById('btnCards'),
+      btnPlaylist: document.getElementById('btnPlaylist'),
+      btnYes: document.getElementById('btnYes'),
+      btnNo: document.getElementById('btnNo'),
+      questionText: document.getElementById('questionText'),
+      menuContainer: document.querySelector('.menu-container'),
+      debugStatus: document.getElementById('debugStatus'),
+      cardDisplay: document.getElementById('cardDisplay'),
+      cardIndex: document.getElementById('cardIndex'),
+      cardTotal: document.getElementById('cardTotal'),
+      cardPrev: document.getElementById('cardPrev'),
+      cardNext: document.getElementById('cardNext'),
+      playlistList: document.getElementById('playlistList'),
+      bgStars: document.getElementById('bgStars'),
+      heartSvgs: document.querySelectorAll('.heart-svg'),
+      backButtons: {
+        letter: document.getElementById('backFromLetter'),
+        cards: document.getElementById('backFromCards'),
+        playlist: document.getElementById('backFromPlaylist')
+      }
+    };
+
+    // === ОТКРЫТИЕ/ЗАКРЫТИЕ КОНТЕЙНЕРОВ ===
+    function openContainer(container, initFn = null) {
+      if (!container) return;
+      if (initFn) try { initFn(); } catch (e) { console.log(e); }
+      
+      // Очистка старых звёзд если есть
+      let starsContainer = container.querySelector('.container-stars-bg');
+      if (starsContainer) {
+        starsContainer.remove();
+      }
+      
+      // Создание контейнера для звёзд
+      starsContainer = document.createElement('div');
+      starsContainer.className = 'container-stars-bg';
+      container.insertBefore(starsContainer, container.firstChild);
+      
+      // Добавление звёзд в фон
+      addStarsToContainer(starsContainer, 100);
+      
+      container.classList.add('active');
+      updateDebug('✓ Открыто');
+    }
+
+    function closeContainer(container) {
+      if (!container) return;
+      // Очистка звёзд при закрытии
+      const starsContainer = container.querySelector('.container-stars-bg');
+      if (starsContainer) {
+        starsContainer.remove();
+      }
+      container.classList.remove('active');
+      updateDebug('✓ Закрыто');
+    }
+
+    window.openLetter = () => openContainer(DOM.letterContainer);
+    window.openCards = () => openContainer(DOM.cardsContainer, initCards);
+    window.openPlaylist = () => openContainer(DOM.playlistContainer, initPlaylist);
+    window.closeLetter = () => closeContainer(DOM.letterContainer);
+    window.closeCards = () => closeContainer(DOM.cardsContainer);
+    window.closePlaylist = () => closeContainer(DOM.playlistContainer);
+
+    // Функция для отладки
+    function updateDebug(msg) {
+      if (DOM.debugStatus) {
+        DOM.debugStatus.textContent = msg;
+        console.log('[DEBUG]', msg);
+      }
+    }
+
+    updateDebug('⏳ Загрузка...');
+
+    // === СИНТЕЗ ЗВУКОВ ===
+    class SoundGenerator {
+      constructor() {
+        this.audioContext = null;
+        this.initAudioContext();
+      }
+
+      initAudioContext() {
+        if (!this.audioContext) {
+          this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+      }
+
+      playSound(frequency, duration, type = 'sine', volume = 0.3) {
+        try {
+          this.initAudioContext();
+          const ctx = this.audioContext;
+          const now = ctx.currentTime;
+
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.type = type;
+          osc.frequency.value = frequency;
+
+          gain.gain.setValueAtTime(volume, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + duration);
+
+          osc.start(now);
+          osc.stop(now + duration);
+        } catch (e) {
+          console.log('Audio not available');
+        }
+      }
+
+      // Звук клика по сердцу
+      clickSound() {
+        this.playSound(800, 0.1, 'sine', 0.2);
+        this.playSound(1200, 0.1, 'sine', 0.15);
+      }
+
+      // Звук победы
+      victorySound() {
+        const notes = [262, 294, 330, 392]; // C, D, E, G
+        notes.forEach((freq, i) => {
+          setTimeout(() => this.playSound(freq, 0.3, 'sine', 0.3), i * 150);
+        });
+      }
+
+      // Звук предупреждения о времени
+      warningSound() {
+        this.playSound(600, 0.2, 'sine', 0.25);
+      }
+
+      // Звук попадания на сердце
+      hitSound() {
+        this.playSound(1000, 0.15, 'sine', 0.25);
+        setTimeout(() => this.playSound(1400, 0.15, 'sine', 0.2), 75);
+      }
+
+      // Звук отказа
+      noSound() {
+        this.playSound(300, 0.3, 'sine', 0.2);
+      }
+
+      // Красивая музыка при согласии
+      playRomanticMusic() {
+        const notes = [
+          { freq: 262, duration: 0.5 },  // C
+          { freq: 294, duration: 0.5 },  // D
+          { freq: 330, duration: 0.5 },  // E
+          { freq: 392, duration: 1 },    // G
+          { freq: 392, duration: 0.5 },  // G
+          { freq: 440, duration: 0.5 },  // A
+          { freq: 494, duration: 0.5 },  // B
+          { freq: 523, duration: 1.5 },  // C (высокое)
+          { freq: 494, duration: 0.5 },  // B
+          { freq: 440, duration: 0.5 },  // A
+          { freq: 392, duration: 1 },    // G
+        ];
+
+        let delay = 0;
+        notes.forEach(note => {
+          setTimeout(() => {
+            this.playSound(note.freq, note.duration, 'sine', 0.35);
+          }, delay * 1000);
+          delay += note.duration + 0.1;
+        });
+      }
+
+      // Проигрывание мелодии песни
+      playMelody(melodyFreqs) {
+        const noteDuration = 0.2;
+        let delay = 0;
+
+        melodyFreqs.forEach(freq => {
+          setTimeout(() => {
+            this.playSound(freq, noteDuration, 'sine', 0.3);
+          }, delay * 1000);
+          delay += noteDuration + 0.05;
+        });
+
+        // Повторяем мелодию ещё раз для более длинного урывка
+        delay += 0.3;
+        melodyFreqs.forEach(freq => {
+          setTimeout(() => {
+            this.playSound(freq, noteDuration, 'sine', 0.25);
+          }, delay * 1000);
+          delay += noteDuration + 0.05;
+        });
+      }
+
+      // Проигрывание мелодии с разными длительностями нот
+      playMelodyNotes(notes) {
+        let delay = 0;
+
+        // Первый проход
+        notes.forEach(note => {
+          setTimeout(() => {
+            this.playSound(note.freq, note.duration, 'sine', 0.3);
+          }, delay * 1000);
+          delay += note.duration + 0.08;
+        });
+
+        // Второй проход (повтор)
+        delay += 0.2;
+        notes.forEach(note => {
+          setTimeout(() => {
+            this.playSound(note.freq, note.duration, 'sine', 0.25);
+          }, delay * 1000);
+          delay += note.duration + 0.08;
+        });
+      }
+    }
+
+    const soundGen = new SoundGenerator();
+
+    // === СОЗДАНИЕ ФОНОВОГО ДЕКОРА ===
+    function createBackgroundDecorations() {
+      const starCount = 100;
+      const starTypes = ['small', 'medium', 'large', 'glow'];
+
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        const type = starTypes[Math.floor(Math.random() * starTypes.length)];
+        star.className = `star ${type}`;
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 5 + 's';
+        
+        const durations = {
+          small: Math.random() * 2 + 3,
+          medium: Math.random() * 1.5 + 2.5,
+          large: Math.random() * 1 + 2,
+          glow: Math.random() * 1.5 + 2.5
+        };
+        star.style.animationDuration = durations[type] + 's';
+        
+        DOM.bgStars.appendChild(star);
+      }
+
+      const floatingHearts = ['❤️', '💖', '💕'];
+      for (let i = 0; i < 3; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'floating-heart';
+        heart.textContent = floatingHearts[Math.floor(Math.random() * floatingHearts.length)];
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.top = Math.random() * 100 + '%';
+        heart.style.animationDuration = (25 + Math.random() * 15) + 's';
+        heart.style.animationDelay = Math.random() * 5 + 's';
+        heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+        heart.style.opacity = 0.05 + Math.random() * 0.1;
+        DOM.bgStars.appendChild(heart);
+      }
+    }
+
+    // === ДОБАВЛЕНИЕ ЗВЁЗД В КОНТЕЙНЕРЫ ===
+    function addStarsToContainer(container, count = 30) {
+      if (!container) return;
+      const starTypes = ['small', 'medium', 'large', 'glow'];
+
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        const type = starTypes[Math.floor(Math.random() * starTypes.length)];
+        star.className = `container-star ${type}`;
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 5 + 's';
+        
+        const durations = {
+          small: Math.random() * 2 + 3,
+          medium: Math.random() * 1.5 + 2.5,
+          large: Math.random() * 1 + 2,
+          glow: Math.random() * 1.5 + 2.5
+        };
+        star.style.animationDuration = durations[type] + 's';
+        
+        container.appendChild(star);
+      }
+    }
+
+    // === ЭФФЕКТЫ ЧАСТИЦ (оптимизированные) ===
+    function createParticles(x, y, type = 'hearts') {
+      const particles = type === 'hearts' ? ['❤️', '💖', '💕'] : ['✨', '⭐', '💫'];
+      const count = 6;
+
+      for (let i = 0; i < count; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        particle.textContent = particles[Math.floor(Math.random() * particles.length)];
+        particle.style.left = x + 'px';
+        particle.style.top = y + 'px';
+
+        const angle = (Math.PI * 2 * i) / count;
+        const distance = 60 + Math.random() * 40;
+        particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+        particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 800);
+      }
+    }
+
+    function createFlash() {
+      const flash = document.createElement('div');
+      flash.classList.add('flash');
+      document.body.appendChild(flash);
+      setTimeout(() => flash.remove(), 300);
+    }
+
+    function createPulseRing(x, y) {
+      const ring = document.createElement('div');
+      ring.classList.add('pulse-ring');
+      ring.style.cssText = `left:${x}px;top:${y}px;width:30px;height:30px;margin-left:-15px;margin-top:-15px`;
+      document.body.appendChild(ring);
+      setTimeout(() => ring.remove(), 600);
+    }
+
+    function createSparks(x, y, count = 8) {
+      for (let i = 0; i < count; i++) {
+        const spark = document.createElement('div');
+        spark.classList.add('spark');
+        spark.textContent = '✨';
+        spark.style.left = x + 'px';
+        spark.style.top = y + 'px';
+        spark.style.fontSize = (Math.random() * 8 + 12) + 'px';
+
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5);
+        const distance = 50 + Math.random() * 50;
+        spark.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+        spark.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+
+        document.body.appendChild(spark);
+        setTimeout(() => spark.remove(), 600);
+      }
+    }
+
+    // Предотвращаем масштабирование на мобилях
+    document.addEventListener('touchmove', function (e) {
+      if (e.scale !== 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    const btnYes = document.getElementById('btnYes');
+    const btnNo = document.getElementById('btnNo');
+    const questionText = document.getElementById('questionText');
+    const heartSvgs = document.querySelectorAll('.heart-svg');
+
+    // === МЕНЮ И НАВИГАЦИЯ === 
+    const menuBtns = document.querySelectorAll('.menu-btn');
+    const letterContainer = document.getElementById('letterContainer');
+    const cardsContainer = document.getElementById('cardsContainer');
+    const playlistContainer = document.getElementById('playlistContainer');
+
+    // Отладка - проверяем что контейнеры существуют
+    console.log('Containers found:', {
+      letterContainer: !!letterContainer,
+      cardsContainer: !!cardsContainer,
+      playlistContainer: !!playlistContainer
+    });
+
+    if (!letterContainer) updateDebug('❌ Letter не найден');
+    if (!cardsContainer) updateDebug('❌ Cards не найден');
+    if (!playlistContainer) updateDebug('❌ Playlist не найден');
+    if (letterContainer && cardsContainer && playlistContainer) {
+      updateDebug('✓ Все контейнеры готовы');
+    }
+
+    // === ОБРАБОТЧИКИ СОБЫТИЙ (упрощено и оптимизировано) ===
+    const setupEventListener = (element, event, handler, passive = true) => {
+      if (!element) return;
+      element.addEventListener(event, handler, { passive });
+    };
+
+    const setupContainerHandlers = (btn, container, initFn, isOpen) => {
+      if (!btn || !container) return;
+      const handler = isOpen ? () => openContainer(container, initFn) : () => closeContainer(container);
+      setupEventListener(btn, 'click', handler);
+      setupEventListener(btn, 'touchend', handler);
+    };
+
+    // Привязка меню
+    setupContainerHandlers(DOM.btnLetter, DOM.letterContainer, null, true);
+    setupContainerHandlers(DOM.btnCards, DOM.cardsContainer, initCards, true);
+    setupContainerHandlers(DOM.btnPlaylist, DOM.playlistContainer, initPlaylist, true);
+
+    // Кнопки назад
+    setupContainerHandlers(DOM.backButtons.letter, DOM.letterContainer, null, false);
+    setupContainerHandlers(DOM.backButtons.cards, DOM.cardsContainer, null, false);
+    setupContainerHandlers(DOM.backButtons.playlist, DOM.playlistContainer, null, false);
+
+    // === КАРТОЧКИ ===
+    const cardsList = [
+      "Твоя улыбка делает каждый мой день ярче ❤️",
+      "С тобой я чувствую себя настоящей версией себя 💕",
+      "Спасибо, что выслушиваешь меня без осуждения 💖",
+      "Твоя доброта вдохновляет меня быть лучше ✨",
+      "Я люблю те моменты, когда мы просто вместе 🥰",
+      "Ты мой источник вдохновения и счастья 💫",
+      "Каждый день с тобой — это приключение 🌹",
+      "Спасибо за твою поддержку и веру в меня 💪",
+      "Ты главное, что случилось в моей жизни 👑",
+      "Твои объятия — мое любимое место на земле 🤗",
+      "С тобой я забываю обо всех проблемах мира 🌍",
+      "И самое главное - НЕ ВТЫКАЙ💑"
+    ];
+
+    let currentCardIndex = 0;
+
+    function initCards() {
+      if (currentCardIndex >= cardsList.length) currentCardIndex = 0;
+      updateCard();
+    }
+
+    function updateCard() {
+      DOM.cardDisplay.textContent = cardsList[currentCardIndex];
+      DOM.cardIndex.textContent = currentCardIndex + 1;
+      DOM.cardTotal.textContent = cardsList.length;
+    }
+
+    const updateCardIndex = (step) => {
+      currentCardIndex = (currentCardIndex + step + cardsList.length) % cardsList.length;
+      updateCard();
+    };
+
+    setupEventListener(DOM.cardNext, 'click', () => updateCardIndex(1));
+    setupEventListener(DOM.cardNext, 'touchend', () => updateCardIndex(1));
+    setupEventListener(DOM.cardPrev, 'click', () => updateCardIndex(-1));
+    setupEventListener(DOM.cardPrev, 'touchend', () => updateCardIndex(-1));
+
+    // Свайп на мобилях
+    let touchStartX = 0;
+    if (DOM.cardDisplay) {
+      setupEventListener(DOM.cardDisplay, 'touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+      });
+      setupEventListener(DOM.cardDisplay, 'touchend', (e) => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 50) {
+          updateCardIndex(diff > 0 ? 1 : -1);
+        }
+      });
+    }
+
+    // === ПЛЕЙЛИСТ ===
+    const playlistData = [
+      {
+        name: "Nothing's Gonna Hurt You Baby",
+        artist: "Cigarettes After Sex",
+        youtubeUrl: "https://www.youtube.com/results?search_query=Nothing's+Gonna+Hurt+You+Baby+Cigarettes+After+Sex",
+        melody: [
+          { freq: 130, duration: 0.4 },
+          { freq: 146, duration: 0.4 },
+          { freq: 164, duration: 0.4 },
+          { freq: 146, duration: 0.4 },
+          { freq: 130, duration: 0.8 },
+          { freq: 146, duration: 0.4 },
+          { freq: 164, duration: 0.4 },
+          { freq: 146, duration: 0.4 },
+          { freq: 130, duration: 0.8 },
+          { freq: 146, duration: 0.4 },
+          { freq: 164, duration: 0.4 },
+          { freq: 146, duration: 0.4 },
+          { freq: 130, duration: 0.4 }
+        ]
+      },
+      {
+        name: "Creep",
+        artist: "Radiohead",
+        youtubeUrl: "https://www.youtube.com/results?search_query=Creep+Radiohead",
+        melody: [
+          { freq: 164, duration: 0.3 },
+          { freq: 196, duration: 0.3 },
+          { freq: 220, duration: 0.3 },
+          { freq: 196, duration: 0.3 },
+          { freq: 164, duration: 0.6 },
+          { freq: 196, duration: 0.3 },
+          { freq: 220, duration: 0.3 },
+          { freq: 196, duration: 0.3 },
+          { freq: 164, duration: 0.3 },
+          { freq: 220, duration: 0.3 },
+          { freq: 196, duration: 0.3 },
+          { freq: 164, duration: 0.6 },
+          { freq: 196, duration: 0.3 },
+          { freq: 220, duration: 0.3 },
+          { freq: 247, duration: 0.3 },
+          { freq: 220, duration: 0.6 }
+        ]
+      },
+      {
+        name: "Fake Plastic Trees",
+        artist: "Radiohead",
+        youtubeUrl: "https://www.youtube.com/results?search_query=Fake+Plastic+Trees+Radiohead",
+        melody: [
+          { freq: 261, duration: 0.4 },
+          { freq: 293, duration: 0.4 },
+          { freq: 329, duration: 0.4 },
+          { freq: 349, duration: 0.4 },
+          { freq: 329, duration: 0.4 },
+          { freq: 293, duration: 0.4 },
+          { freq: 261, duration: 0.8 },
+          { freq: 293, duration: 0.4 },
+          { freq: 329, duration: 0.4 },
+          { freq: 349, duration: 0.4 },
+          { freq: 329, duration: 0.4 },
+          { freq: 293, duration: 0.4 },
+          { freq: 261, duration: 0.4 },
+          { freq: 293, duration: 0.8 }
+        ]
+      },
+      {
+        name: "No Surprises",
+        artist: "Radiohead",
+        youtubeUrl: "https://www.youtube.com/results?search_query=No+Surprises+Radiohead",
+        melody: [
+          { freq: 196, duration: 0.3 },
+          { freq: 220, duration: 0.3 },
+          { freq: 247, duration: 0.3 },
+          { freq: 220, duration: 0.3 },
+          { freq: 196, duration: 0.6 },
+          { freq: 220, duration: 0.3 },
+          { freq: 247, duration: 0.3 },
+          { freq: 220, duration: 0.3 },
+          { freq: 196, duration: 0.3 },
+          { freq: 247, duration: 0.3 },
+          { freq: 220, duration: 0.3 },
+          { freq: 196, duration: 0.6 },
+          { freq: 220, duration: 0.3 },
+          { freq: 247, duration: 0.3 }
+        ]
+      },
+      {
+        name: "K.",
+        artist: "Cigarettes After Sex",
+        youtubeUrl: "https://www.youtube.com/results?search_query=K+Cigarettes+After+Sex",
+        melody: [
+          { freq: 130, duration: 0.5 },
+          { freq: 140, duration: 0.5 },
+          { freq: 152, duration: 0.5 },
+          { freq: 140, duration: 0.5 },
+          { freq: 130, duration: 1 },
+          { freq: 140, duration: 0.5 },
+          { freq: 152, duration: 0.5 },
+          { freq: 140, duration: 0.5 },
+          { freq: 130, duration: 0.5 },
+          { freq: 140, duration: 0.5 },
+          { freq: 152, duration: 0.5 },
+          { freq: 140, duration: 1 }
+        ]
+      },
+      {
+        name: "Paranoid Android",
+        artist: "Radiohead",
+        youtubeUrl: "https://www.youtube.com/results?search_query=Paranoid+Android+Radiohead",
+        melody: [
+          { freq: 293, duration: 0.3 },
+          { freq: 329, duration: 0.3 },
+          { freq: 349, duration: 0.3 },
+          { freq: 392, duration: 0.3 },
+          { freq: 349, duration: 0.3 },
+          { freq: 329, duration: 0.3 },
+          { freq: 293, duration: 0.6 },
+          { freq: 329, duration: 0.3 },
+          { freq: 349, duration: 0.3 },
+          { freq: 392, duration: 0.3 },
+          { freq: 349, duration: 0.3 },
+          { freq: 329, duration: 0.3 },
+          { freq: 293, duration: 0.3 },
+          { freq: 329, duration: 0.6 }
+        ]
+      },
+      {
+        name: "Affection",
+        artist: "Cigarettes After Sex",
+        youtubeUrl: "https://www.youtube.com/results?search_query=Affection+Cigarettes+After+Sex",
+        melody: [
+          { freq: 110, duration: 0.5 },
+          { freq: 123, duration: 0.5 },
+          { freq: 138, duration: 0.5 },
+          { freq: 123, duration: 0.5 },
+          { freq: 110, duration: 1 },
+          { freq: 123, duration: 0.5 },
+          { freq: 138, duration: 0.5 },
+          { freq: 123, duration: 0.5 },
+          { freq: 110, duration: 0.5 },
+          { freq: 123, duration: 0.5 },
+          { freq: 138, duration: 0.5 },
+          { freq: 123, duration: 1 }
+        ]
+      },
+      {
+        name: "Street Spirit (Fade Out)",
+        artist: "Radiohead",
+        youtubeUrl: "https://www.youtube.com/results?search_query=Street+Spirit+Fade+Out+Radiohead",
+        melody: [
+          { freq: 247, duration: 0.4 },
+          { freq: 262, duration: 0.4 },
+          { freq: 294, duration: 0.4 },
+          { freq: 262, duration: 0.4 },
+          { freq: 247, duration: 0.8 },
+          { freq: 262, duration: 0.4 },
+          { freq: 294, duration: 0.4 },
+          { freq: 262, duration: 0.4 },
+          { freq: 247, duration: 0.4 },
+          { freq: 294, duration: 0.4 },
+          { freq: 262, duration: 0.4 },
+          { freq: 247, duration: 0.8 }
+        ]
+      },
+      {
+        name: "Perfect Day",
+        artist: "Lou Reed",
+        youtubeUrl: "https://www.youtube.com/results?search_query=Perfect+Day+Lou+Reed",
+        melody: [
+          { freq: 261, duration: 0.3 },
+          { freq: 293, duration: 0.3 },
+          { freq: 329, duration: 0.3 },
+          { freq: 349, duration: 0.3 },
+          { freq: 329, duration: 0.3 },
+          { freq: 293, duration: 0.3 },
+          { freq: 261, duration: 0.6 },
+          { freq: 293, duration: 0.3 },
+          { freq: 329, duration: 0.3 },
+          { freq: 349, duration: 0.3 },
+          { freq: 329, duration: 0.3 },
+          { freq: 293, duration: 0.3 },
+          { freq: 261, duration: 0.3 },
+          { freq: 293, duration: 0.6 }
+        ]
+      },
+      {
+        name: "Chasing Cars",
+        artist: "Snow Patrol",
+        youtubeUrl: "https://www.youtube.com/results?search_query=Chasing+Cars+Snow+Patrol",
+        melody: [
+          { freq: 196, duration: 0.4 },
+          { freq: 220, duration: 0.4 },
+          { freq: 247, duration: 0.4 },
+          { freq: 220, duration: 0.4 },
+          { freq: 196, duration: 0.8 },
+          { freq: 220, duration: 0.4 },
+          { freq: 247, duration: 0.4 },
+          { freq: 220, duration: 0.4 },
+          { freq: 196, duration: 0.4 },
+          { freq: 220, duration: 0.4 },
+          { freq: 247, duration: 0.4 },
+          { freq: 220, duration: 0.8 }
+        ]
+      }
+    ];
+
+    function initPlaylist() {
+      DOM.playlistList.innerHTML = playlistData.map((song, idx) => `
+        <div class="playlist-item" data-index="${idx}">
+          <div class="song-number">♫ ${idx + 1}</div>
+          <div class="song-name">${song.name}</div>
+          <div class="song-artist">${song.artist}</div>
+          <div style="display: flex; gap: clamp(8px, 2vw, 12px); flex-wrap: wrap; margin-top: 10px;">
+            <button class="spotify-play-btn" data-action="play">🎵 Слушать</button>
+            <button class="youtube-btn" data-action="youtube">▶️ YouTube</button>
+          </div>
+        </div>
+      `).join('');
+
+      DOM.playlistList.addEventListener('click', (e) => {
+        const item = e.target.closest('.playlist-item');
+        if (!item) return;
+        const idx = parseInt(item.dataset.index);
+        const song = playlistData[idx];
+        const action = e.target.dataset.action;
+
+        if (action === 'play') {
+          e.stopPropagation();
+          soundGen.playMelodyNotes(song.melody);
+          createParticles(window.innerWidth / 2, window.innerHeight / 2, 'hearts');
+          item.style.background = 'rgba(255, 46, 99, 0.3)';
+          setTimeout(() => { item.style.background = 'rgba(255, 46, 99, 0.1)'; }, 3000);
+        } else if (action === 'youtube') {
+          e.stopPropagation();
+          window.open(song.youtubeUrl, '_blank');
+        }
+      });
+
+      DOM.playlistList.addEventListener('mouseenter', (e) => {
+        if (e.target.closest('.playlist-item')) {
+          e.target.closest('.playlist-item').style.background = 'rgba(255, 46, 99, 0.2)';
+        }
+      }, true);
+
+      DOM.playlistList.addEventListener('mouseleave', (e) => {
+        if (e.target.closest('.playlist-item')) {
+          e.target.closest('.playlist-item').style.background = 'rgba(255, 46, 99, 0.1)';
+        }
+      }, true);
+    }
+
+    // === ЛОГИКА УБЕГАНИЯ (оптимизированная) ===
+    let clickCount = 0;
+    const messages = [
+      "Подумай лучше 🤨", "Серьезно?? 😏", "Не выходит 😤", "Ну же! 🥺",
+      "Давай по-другому? 💔", "Ты шутишь?? 😱", "Нет-нет-нет! 🙅", 
+      "Попробуй еще раз! 😉", "Я знаю, ты согласишься! 😊", "НЕ ДУРИ! ✨",
+      "Камон, ты же хочешь! 💕", "Не мучай меня! 😭", "Будь доброй! 🥺",
+      "Ты шо мыла наелась?", "Может, все-таки да? 🤔"
+    ];
+
+    function moveButton() {
+      soundGen.noSound();
+      clickCount++;
+
+      DOM.questionText.textContent = messages[Math.floor(Math.random() * messages.length)];
+      DOM.questionText.style.color = "#ff6b81";
+
+      DOM.btnNo.style.position = window.innerWidth <= 768 ? 'absolute' : 'fixed';
+
+      const { offsetWidth: width, offsetHeight: height } = DOM.btnNo;
+      const padding = 30;
+      const maxX = Math.max(padding, window.innerWidth - (width || 80) - padding);
+      const maxY = Math.max(padding, window.innerHeight - (height || 50) - padding);
+
+      DOM.btnNo.style.left = Math.random() * maxX + 'px';
+      DOM.btnNo.style.top = Math.random() * maxY + 'px';
+    }
+
+    if (window.matchMedia("(hover: hover)").matches) {
+      DOM.btnNo.addEventListener('mouseenter', moveButton);
+    } else {
+      setupEventListener(DOM.btnNo, 'touchend', moveButton);
+    }
+
+    // === ЛОГИКА ПОБЕДЫ (оптимизированная) ===
+    function handleYesClick() {
+      soundGen.playRomanticMusic();
+      DOM.btnYes.style.display = 'none';
+      DOM.btnNo.style.display = 'none';
+      DOM.menuContainer.style.display = 'none';
+
+      DOM.questionText.textContent = "Я тебя люблю! 🥰❤️";
+      DOM.questionText.style.fontSize = "clamp(24px, 7vw, 40px)";
+      DOM.questionText.style.color = "#ff2e63";
+
+      DOM.heartSvgs.forEach(svg => svg.style.animationDuration = "1.2s");
+
+      launchConfetti();
+      for (let i = 0; i < 8; i++) {
+        setTimeout(() => createParticles(window.innerWidth / 2, window.innerHeight / 2, 'hearts'), i * 100);
+      }
+    }
+
+    setupEventListener(DOM.btnYes, 'click', handleYesClick);
+    setupEventListener(DOM.btnYes, 'touchend', handleYesClick);
+
+    function launchConfetti() {
+      const emojis = ['❤️', '💖', '😍', '🥰', '🌹', '💕', '✨'];
+      let confettiCount = 0;
+      const maxConfetti = 80;
+
+      const confettiInterval = setInterval(() => {
+        if (confettiCount > maxConfetti) {
+          clearInterval(confettiInterval);
+          return;
+        }
+
+        const el = document.createElement('div');
+        el.classList.add('confetti');
+        el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.fontSize = (Math.random() * 20 + 20) + 'px';
+        el.style.animationDuration = (Math.random() * 3 + 2.5) + 's';
+        el.style.opacity = Math.random() * 0.7 + 0.3;
+        document.body.appendChild(el);
+        confettiCount++;
+
+        setTimeout(() => el.remove(), 5500);
+      }, 50);
+    }
+
+    // === РЕГИСТРАЦИЯ SERVICE WORKER И PWA ===
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(() => {
+            updateDebug('✓ Приложение готово к установке');
+          })
+          .catch(err => {
+            console.error('Service Worker error:', err);
+          });
+      });
+    }
+
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      updateDebug('💾 Можешь установить приложение');
+    });
+
+    window.addEventListener('appinstalled', () => {
+      updateDebug('✓ Приложение установлено!');
+    });
+
+    // === ИНИЦИАЛИЗАЦИЯ ===
+    updateDebug('✓ Приложение готово!');
+    createBackgroundDecorations();
+  </script>
+
+</body>
+
+</html>
